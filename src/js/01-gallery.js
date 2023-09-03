@@ -3,87 +3,73 @@ import { galleryItems } from './gallery-items';
 // Change code below this line
 console.log(galleryItems);
 
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
-// Add imports above this line
-import { galleryItems } from './gallery-items';
+
 // Change code below this line
-document.addEventListener("DOMContentLoaded", () => {
-    const gallery = new SimpleLightbox(".gallery a", {
-    });
-  });
-  const gallery = new SimpleLightbox(".gallery a", {
-  });
-console.log(galleryItems);
 
+const gallery = document.querySelector('.gallery');
 
-// import { galleryItems } from './gallery-items.js';
-// // Change code below this line
+function createGalleryItem(item) {
+  const galleryItem = document.createElement('li');
+  galleryItem.classList.add('gallery__item');
 
-// const gallery = document.querySelector('.gallery');
+  const link = document.createElement('a');
+  link.classList.add('gallery__link');
+  link.href = item.original;
 
-// function createGalleryItem(item) {
-//   const galleryItem = document.createElement('li');
-//   galleryItem.classList.add('gallery__item');
+  const image = document.createElement('img');
+  image.classList.add('gallery__image');
+  image.src = item.preview;
+  image.setAttribute('data-source', item.original);
+  image.alt = item.description;
 
-//   const link = document.createElement('a');
-//   link.classList.add('gallery__link');
-//   link.href = item.original;
+  link.appendChild(image);
+  galleryItem.appendChild(link);
 
-//   const image = document.createElement('img');
-//   image.classList.add('gallery__image');
-//   image.src = item.preview;
-//   image.setAttribute('data-source', item.original);
-//   image.alt = item.description;
+  return galleryItem;
+}
 
-//   link.appendChild(image);
-//   galleryItem.appendChild(link);
+const galleryItemsMarkup = galleryItems.map(item => createGalleryItem(item));
+gallery.append(...galleryItemsMarkup);
 
-//   return galleryItem;
-// }
+let activeModal = null;
 
-// const galleryItemsMarkup = galleryItems.map(item => createGalleryItem(item));
-// gallery.append(...galleryItemsMarkup);
+gallery.addEventListener('click', e => {
+  e.preventDefault();
+  if (e.target.tagName !== 'IMG') {
+    return;
+  }
 
-// let activeModal = null;
+  const source = e.target.dataset.source;
+  const modal = basicLightbox.create(`
+    <img width="1400" height="900" src="${source}">
+  `);
 
-// gallery.addEventListener('click', e => {
-//   e.preventDefault();
-//   if (e.target.tagName !== 'IMG') {
-//     return;
-//   }
+  activeModal = modal;
 
-//   const source = e.target.dataset.source;
-//   const modal = basicLightbox.create(`
-//     <img width="1400" height="900" src="${source}">
-//   `);
+  modal.show();
 
-//   activeModal = modal;
+  window.addEventListener('keydown', closeModalOnEscape);
+});
 
-//   modal.show();
+function closeModalOnEscape(e) {
+  if (e.key === 'Escape' && activeModal) {
+    activeModal.close();
+    activeModal = null;
 
-//   window.addEventListener('keydown', closeModalOnEscape);
-// });
-
-// function closeModalOnEscape(e) {
-//   if (e.key === 'Escape' && activeModal) {
-//     activeModal.close();
-//     activeModal = null;
-
-//     window.removeEventListener('keydown', closeModalOnEscape);
-//   }
-// }
-// const instance = basicLightbox.create(html, {
-//   onShow: (instance) => {
-//     window.addEventListener('keydown', closeModalOnEscape);
-//   },
-//   onClose: (instance) => {
-//     window.removeEventListener('keydown', closeModalOnEscape);
-//   }
-// });
-// gallery.addEventListener('click', e => {
-//   e.preventDefault();
-//   if (e.target.tagName !== 'IMG') {
-//     return;
-//   }
-// });
+    window.removeEventListener('keydown', closeModalOnEscape);
+  }
+}
+const instance = basicLightbox.create(html, {
+  onShow: (instance) => {
+    window.addEventListener('keydown', closeModalOnEscape);
+  },
+  onClose: (instance) => {
+    window.removeEventListener('keydown', closeModalOnEscape);
+  }
+});
+gallery.addEventListener('click', e => {
+  e.preventDefault();
+  if (e.target.tagName !== 'IMG') {
+    return;
+  }
+});
