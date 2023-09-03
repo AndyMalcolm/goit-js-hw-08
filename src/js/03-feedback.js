@@ -24,14 +24,12 @@ const saveStateThrottled = throttle(() => {
 emailInput.addEventListener('input', saveStateThrottled);
 messageInput.addEventListener('input', saveStateThrottled);
 
-feedbackForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  localStorage.removeItem('feedback-form-state');
-  emailInput.value = '';
-  messageInput.value = '';
-  console.log('Submitted data:', {
-    email: emailInput.value,
-    message: messageInput.value,
-  });
-});
-
+if (emailInput.value && messageInput.value) {
+    localStorage.removeItem('feedback-form-state');
+    emailInput.value = '';
+    messageInput.value = '';
+    console.log('Submitted data:', {
+      email: emailInput.value,
+      message: messageInput.value,
+    });
+  }
