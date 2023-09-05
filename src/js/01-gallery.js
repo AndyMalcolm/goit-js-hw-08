@@ -6,7 +6,13 @@ console.log(galleryItems);
 
 
 
-const gallery = document.querySelector('.gallery');
+import { galleryItems } from './gallery-items.js';
+// Change code below this line
+
+console.log(galleryItems);
+
+// кoд с 1 задания
+  const gallery = document.querySelector('.gallery');
 
 function createGalleryItem(item) {
   const galleryItem = document.createElement('li');
@@ -28,48 +34,22 @@ function createGalleryItem(item) {
   return galleryItem;
 }
 
-const galleryItemsMarkup = galleryItems.map(item => createGalleryItem(item));
+const galleryItemsMarkup = galleryItems.map(createGalleryItem);
 gallery.append(...galleryItemsMarkup);
 
-let activeModal = null;
-
-gallery.addEventListener('click', e => {
-  e.preventDefault();
-  if (e.target.tagName !== 'IMG') {
-    return;
-  }
-
-  const source = e.target.dataset.source;
-  const modal = basicLightbox.create(`
-    <img width="1400" height="900" src="${source}">
-  `);
-
-  activeModal = modal;
-
-  modal.show();
-
-  window.addEventListener('keydown', closeModalOnEscape);
+const lightbox = new SimpleLightbox('.gallery a.gallery__link', {
+  captionsData: "alt",
+  captionDelay: 250,
 });
 
-function closeModalOnEscape(e) {
-  if (e.key === 'Escape' && activeModal) {
-    activeModal.close();
-    activeModal = null;
-
-    window.removeEventListener('keydown', closeModalOnEscape);
-  }
-}
-const instance = basicLightbox.create(html, {
-  onShow: (instance) => {
-    window.addEventListener('keydown', closeModalOnEscape);
-  },
-  onClose: (instance) => {
-    window.removeEventListener('keydown', closeModalOnEscape);
-  }
-});
-gallery.addEventListener('click', e => {
-  e.preventDefault();
-  if (e.target.tagName !== 'IMG') {
-    return;
-  }
-});
+const galleryHtml = `
+  <ul class="gallery">
+    ${galleryItems.map(item => `
+      <li class="gallery__item">
+        <a class="gallery__link" href="${item.original}">
+          <img class="gallery__image" src="${item.preview}" alt="${item.description}" data-source="${item.original}" />
+        </a>
+      </li>
+    `).join('')}
+  </ul>
+`;
