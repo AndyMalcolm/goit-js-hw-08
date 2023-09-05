@@ -24,7 +24,9 @@ const saveStateThrottled = throttle(() => {
 emailInput.addEventListener('input', saveStateThrottled);
 messageInput.addEventListener('input', saveStateThrottled);
 
-if (emailInput.value && messageInput.value) {
+feedbackForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (emailInput.value && messageInput.value) {
     localStorage.removeItem('feedback-form-state');
     emailInput.value = '';
     messageInput.value = '';
@@ -33,3 +35,4 @@ if (emailInput.value && messageInput.value) {
       message: messageInput.value,
     });
   }
+});
