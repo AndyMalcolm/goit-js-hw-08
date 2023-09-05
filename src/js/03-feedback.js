@@ -5,9 +5,8 @@ const emailInput = feedbackForm.querySelector('input[name="email"]');
 const messageInput = feedbackForm.querySelector('textarea[name="message"]');
 
 function loadFormDataFromLocalStorage() {
-  const storedState = localStorage.getItem('feedback-form-state');
-  if (storedState) {
-    const { email, message } = JSON.parse(storedState);
+  if (localStorage.getItem('feedback-form-state')) {
+    const { email, message } = JSON.parse(localStorage.getItem('feedback-form-state'));
     emailInput.value = email;
     messageInput.value = message;
   }
