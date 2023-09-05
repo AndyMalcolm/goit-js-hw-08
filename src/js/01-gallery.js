@@ -6,12 +6,6 @@ console.log(galleryItems);
 
 
 
-import { galleryItems } from './gallery-items.js';
-// Change code below this line
-
-console.log(galleryItems);
-
-// кoд с 1 задания
   const gallery = document.querySelector('.gallery');
 
 function createGalleryItem(item) {
