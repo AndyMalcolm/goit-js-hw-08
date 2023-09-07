@@ -26,29 +26,10 @@ messageInput.addEventListener('input', throttle(saveFormDataToLocalStorage, 500)
 feedbackForm.addEventListener('submit', (e) => {
   e.preventDefault();
   if (emailInput.value && messageInput.value) {
-    emailInput.value = '';
-    messageInput.value = '';
     localStorage.removeItem('feedback-form-state');
     console.log('Submitted data:', {
       email: emailInput.value,
       message: messageInput.value,
     });
-  }
-});
-
-
-feedbackForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  if (emailInput.value && messageInput.value) {
-    const submittedData = {
-      email: emailInput.value,
-      message: messageInput.value,
-    };
-
-    emailInput.value = '';
-    messageInput.value = '';
-    localStorage.removeItem('feedback-form-state');
-
-    console.log('Submitted data:', submittedData);
   }
 });
